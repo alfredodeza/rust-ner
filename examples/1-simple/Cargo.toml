@@ -1,0 +1,24 @@
+[package]
+name = "ner-candle"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+#candle = { git = "https://github.com/huggingface/candle.git", version = "0.4.0" }
+#candle-core = { git = "https://github.com/huggingface/candle.git", version = "0.4.0" }
+#candle-transformers = { git = "https://github.com/huggingface/candle.git", version = "0.4.0" }
+#candle-nn = { git = "https://github.com/huggingface/candle.git", version = "0.4.0" }
+#hf-hub = "0.3.0"
+#serde_json = "1.0"
+#clap = { version = "4.1.4", features = ["derive"] }
+anyhow = { version = "1", features = ["backtrace"] }
+#tokenizers = { version = "0.15.0", default-features = false, features = ["onig"]}
+#onig = { version = "6.4", default-features = false, optional = true }
+#rust_tokenizers = "8.1.1"
+rust-bert = { version = "0.22.0", features = ["download-libtorch"] }
+
+
+
+
