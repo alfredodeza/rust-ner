@@ -1,8 +1,18 @@
 use rust_bert::pipelines::ner::NERModel;
 use actix_web::{web, App, HttpResponse, HttpServer, Responder};
 use serde::Serialize;
+use std::sync::{Arc, Mutex};
+use lazy_static::lazy_static; 
 
+struct NERModelWrapper {
+    model: Arc<Mutex<NERModel>>,
+}
 
+lazy_static! {
+    static ref NER_MODEL_WRAPPER: NERModelWrapper = NERModelWrapper {
+    model: Arc::new(Mutex::new(NERModel::new(Default::default()).unwrap())),
+};
+}
 
 async fn index() -> impl Responder {
     let html = r#"<!DOCTYPE html>
@@ -28,7 +38,9 @@ async fn index() -> impl Responder {
 
 async fn detect(input_text: web::Json<String>) -> impl Responder {
     //    Set-up model
-    let ner_model = NERModel::new(Default::default()).unwrap();
+    let model_guard = NER_MODEL_WRAPPER.model.lock().unwrap();
+
+    //let ner_model = NERModel::new(Default::default()).unwrap();
 
     //    Define input
     let input = [
@@ -38,7 +50,7 @@ async fn detect(input_text: web::Json<String>) -> impl Responder {
     ];
 
     //    Run model
-    let output = ner_model.predict_full_entities(&input);
+    let output = model_guard.predict_full_entities(&input);
     for entity in output {
         println!("{entity:?}");
     }
